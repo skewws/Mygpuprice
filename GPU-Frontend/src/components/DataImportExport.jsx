@@ -4,10 +4,9 @@ import {
   axiosFileInstance,
   useAxiosWithErrorHandling,
 } from "../api/axios";
-import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import axios from "axios";
-import { saveContentFile } from "../utils/helper";
+import { getSheet, saveContentFile } from "../utils/helper";
 import Loader from "./loader";
 
 const DataEntry = () => {
@@ -35,17 +34,11 @@ const DataEntry = () => {
 
       const reader = new FileReader();
       reader.onload = (event) => {
-        const data = new Uint8Array(event.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        const json = XLSX.utils.sheet_to_json(sheet);
-        if (json.length > 0) {
-          const columns = Object.keys(json[0]);
-          setColumnNames(columns);
-        }
-        setFileContent(json);
+        const sheet = getSheet(event);
+        setColumnNames(sheet?.columns);
+        setFileContent(sheet?.json);
       };
+
       reader.readAsArrayBuffer(uploadedFile);
     } else {
       alert("Please upload a valid Excel file");
@@ -60,7 +53,11 @@ const DataEntry = () => {
   useEffect(() => {
     if (file && isUploaded) {
       handleSaveFile();
-      saveContentFile(axiosInstance, fileContent);
+
+      if (fileContent.length > 0) {
+        const content = fileContent.slice(1);
+        saveContentFile(axiosInstance, content);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUploaded, fileContent]);
@@ -161,15 +158,6 @@ const DataEntry = () => {
       <div className="flex-grow p-4">
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-300 rounded">
-            <thead>
-              <tr>
-                {columnNames.map((colName, index) => (
-                  <th key={index} className="py-2 px-4 border-b">
-                    {colName}
-                  </th>
-                ))}
-              </tr>
-            </thead>
             <tbody>
               {fileContent.length === 0 ? (
                 <tr>
@@ -179,7 +167,10 @@ const DataEntry = () => {
                 </tr>
               ) : (
                 fileContent.map((row, rowIndex) => (
-                  <tr key={rowIndex}>
+                  <tr
+                    key={rowIndex}
+                    className={`${rowIndex < 1 ? "font-bold" : ""}`}
+                  >
                     {columnNames.map((colName, colIndex) => (
                       <td key={colIndex} className="py-2 px-4 border-b">
                         {row[colName] || "-"}

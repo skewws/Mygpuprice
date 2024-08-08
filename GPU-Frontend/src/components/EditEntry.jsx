@@ -20,15 +20,13 @@ const EditEntry = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedValue]);
 
-  const handleEdit = (rowIndex, colKey, value, type) => {
-    const isInt = Number.isInteger(type);
+  const handleEdit = (rowIndex, colKey, value) => {
     const updatedData = data.map((row, index) => {
       if (index === rowIndex) {
-        return { ...row, [colKey]: isInt ? +value.replace("$", "") : value };
+        return { ...row, [colKey]: value };
       }
       return row;
     });
-
     setEdit(value);
     setData(updatedData);
   };
@@ -91,17 +89,17 @@ const EditEntry = () => {
                   }`}
                   contentEditable
                   suppressContentEditableWarning
-                  onBlur={(e) =>
-                    handleEdit(
-                      rowIndex,
-                      colName,
-                      e.target.innerText,
-                      row[colName]
-                    )
-                  }
+                  onBlur={(e) => {
+                    const newValue =
+                      colIndex >= 3
+                        ? e.target.innerText.replace(/\$/g, "")
+                        : e.target.innerText;
+                    handleEdit(rowIndex, colName, newValue);
+                  }}
                 >
-                  {colIndex >= 3 && row[colName] ? "$" : ""}
-                  {row[colName]}
+                  {colIndex >= 3
+                    ? `$${row[colName] || ""}`
+                    : row[colName] || ""}
                 </td>
               ))}
             </tr>

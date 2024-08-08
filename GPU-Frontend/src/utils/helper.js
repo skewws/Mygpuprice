@@ -1,3 +1,5 @@
+import * as XLSX from "xlsx";
+
 export const saveContentFile = async (instance, data) => {
   try {
     await instance.post("/fileContent/save", { array: data });
@@ -66,4 +68,27 @@ export const sortByTotalIntegers = (arr) => {
 
     return totalB - totalA;
   });
+};
+
+export const getSheet = () => {
+  const data = new Uint8Array(event.target.result);
+  const workbook = XLSX.read(data, { type: "array" });
+  const sheetName = workbook.SheetNames[0];
+  const sheet = workbook.Sheets[sheetName];
+  const range = XLSX.utils.decode_range(sheet["!ref"]);
+  const columns = [];
+
+  for (let C = range.s.c; C <= range.e.c; ++C) {
+    const cellAddress = XLSX.utils.encode_cell({ c: C, r: 0 });
+    const cell = sheet[cellAddress];
+    let header = `Column${C + 1}`;
+    if (cell && cell.v) {
+      header = cell.v;
+    }
+    columns.push(header);
+  }
+
+  const json = XLSX.utils.sheet_to_json(sheet, { header: columns });
+
+  return { json, columns };
 };
