@@ -161,7 +161,10 @@ const DataEntry = () => {
             <tbody>
               {fileContent.length === 0 ? (
                 <tr>
-                  <td colSpan={columnNames.length} className="py-4 text-center">
+                  <td
+                    colSpan={columnNames.length}
+                    className="py-4  text-center"
+                  >
                     No data available
                   </td>
                 </tr>
