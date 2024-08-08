@@ -64,8 +64,7 @@ const Home = () => {
   const AdminButton = (
     <div className="flex mt-8">
       <button
-      className="text-white px-4 py-2 rounded shadow hover:bg-green-700"
-      style={{ backgroundColor: "#198754" }}
+        className="bg-blue-600 text-white px-4 py-2 rounded"
         onClick={() => navigate(!isAuthenticated ? "/login" : "/admin")}
       >
         {!isAuthenticated ? "Sign In" : "Go to Dashboard"}
