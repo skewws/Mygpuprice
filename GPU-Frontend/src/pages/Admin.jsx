@@ -32,21 +32,16 @@ const Admin = () => {
 
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
-   <div className="w-[18%] p-4 flex flex-col" style={{ backgroundColor: "#DFE1E5" }}>
+      <div className="lg:w-1/4 w-full bg-gray-200 p-4 flex flex-col">
         <ul className="flex flex-col space-y-2">
           {["Seller", "Data Entry", "Edit Entry", "Comments"].map((tab) => (
             <li
               key={tab}
-              className={`cursor-pointer px-4 py-3 rounded ${
+              className={`cursor-pointer px-4 py-5 rounded ${
                 activeTab === tab
-                  ? "text-white"
-                  : "text-black hover:bg-gray-100"
+                  ? "bg-indigo-600 text-white"
+                  : "bg-white text-gray-900 hover:bg-gray-100"
               }`}
-              style={
-                activeTab === tab
-                  ? { backgroundColor: "#198754", fontSize: "18px", fontWeight: "700" }
-                  : { backgroundColor: "#EFEFEF", color: "#000", fontSize: "18px", fontWeight: "700" }
-              }
               onClick={() => setActiveTab(tab)}
             >
               {tab}
@@ -56,14 +51,13 @@ const Admin = () => {
 
         <div className="my-10 flex items-center gap-2 flex-wrap">
           <button
-            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+            className="bg-blue-600 text-white px-4 py-2 rounded"
             onClick={() => navigate("/")}
           >
             Back to Home
           </button>
-
           <button
-            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+            className="bg-blue-600 text-white px-4 py-2 rounded"
             onClick={handleLogout}
           >
             Logout

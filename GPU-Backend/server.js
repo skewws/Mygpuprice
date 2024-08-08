@@ -22,6 +22,6 @@ app.use("/", fileRoutes);
 app.use("/fileContent", fileContentRoutes);
 app.use("/comment", commentRoutes);
 
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
