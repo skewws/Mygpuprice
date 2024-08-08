@@ -22,7 +22,8 @@ const Comments = () => {
 
   return (
     <div className="p-4 bg-white shadow-lg rounded">
-      <h2 className="text-2xl font-semibold mb-4">Comments</h2>
+      <h2 className="text-[19px] font-bold">Comments</h2>
+      <br></br>
       <div className="editor-container">
         <ReactQuill
           value={editorValue || comment}
@@ -30,9 +31,11 @@ const Comments = () => {
           placeholder="Write your comment here..."
         />
       </div>
+      <br></br>
       <button
         onClick={handleSubmit}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4"
+        className="text-white px-4 py-2 rounded shadow hover:bg-green-700"
+        style={{ backgroundColor: "#198754" }}
       >
         Submit Comment
       </button>
