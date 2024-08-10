@@ -1,65 +1,98 @@
-import { useState, useMemo, Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import useFetchContent from "../hooks/useFetchContent";
 import { useAxiosWithErrorHandling } from "../api/axios";
-import Loader from "../components/loader";
+import {
+  filteredChipsets,
+  filteredSeries,
+  filteredVram,
+  isShowData,
+} from "../utils/functions";
 import ResultsTable from "../components/ResultsTable";
-import FilterSection from "../components/FilterSection";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useFetchComment from "../hooks/useFetchComment";
 import { checkFilterAppy } from "../utils/helper";
+import Filter from "../components/Filter/Filter";
 
-const Home = () => {
+const FilterComponent = () => {
   let navigate = useNavigate();
   const isAuthenticated = useAuth();
   const comment = useFetchComment();
-
-  const { axiosInstance, loading } = useAxiosWithErrorHandling();
+  const { axiosInstance } = useAxiosWithErrorHandling();
   const { data, uploadTime } = useFetchContent(axiosInstance);
+
   const sellers = localStorage.getItem("sellers")
     ? JSON.parse(localStorage.getItem("sellers"))
     : [];
 
-  const [filters, setFilters] = useState({
-    Chipset: "",
-    Series: "",
-    VRAM: "",
+  const [chipsetFilter, setChipsetFilter] = useState("");
+  const [seriesFilter, setSeriesFilter] = useState("");
+  const [vramFilter, setVramFilter] = useState("");
+  const [filteredChipsets1, seChipsett1] = useState([]);
+  const [filteredSeries1, setSeries1] = useState([]);
+  const [filteredVram1, setVram1] = useState([]);
+
+  useEffect(() => {
+    const fChipsets = filteredChipsets(data, seriesFilter, vramFilter);
+    const fSeries = filteredSeries(data, chipsetFilter, vramFilter);
+    const fVram = filteredVram(data, chipsetFilter, seriesFilter);
+
+    seChipsett1(fChipsets);
+    setSeries1(fSeries);
+    setVram1(fVram);
+  }, [data, chipsetFilter, seriesFilter, vramFilter]);
+
+  const setSingleValue = (fChipsets, fSeries, fVram) => {
+    if (fChipsets?.length === 1) {
+      setChipsetFilter(fChipsets[0]);
+    }
+
+    if (fSeries?.length === 1) {
+      setSeriesFilter(fSeries[0]);
+    }
+
+    if (fVram?.length === 1) {
+      setVramFilter(fVram[0]);
+    }
+  };
+
+  useEffect(() => {
+    setSingleValue(filteredChipsets1, filteredSeries1, filteredVram1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredChipsets1, filteredSeries1, filteredVram1]);
+
+  const handleChipsetChange = (chipset) => {
+    setChipsetFilter((prev) => (prev === chipset ? "" : chipset));
+  };
+
+  const handleSeriesChange = (series) => {
+    setSeriesFilter((prev) => (prev === series ? "" : series));
+  };
+
+  const handleVramChange = (vram) => {
+    setVramFilter((prev) => (prev === vram ? "" : vram));
+  };
+
+  const filteredData = data.filter((item) => {
+    const chipsetMatch = !chipsetFilter || item.Chipset === chipsetFilter;
+    const seriesMatch = !seriesFilter || item.Series === seriesFilter;
+    const vramMatch = !vramFilter || item.VRAM === vramFilter;
+    return chipsetMatch && seriesMatch && vramMatch;
   });
 
-  const handleFilterChange = (type, value) => {
-    setFilters((prev) => ({
-      ...prev,
-      [type]: prev[type] === value ? null : value,
-    }));
-  };
-
   const handleClearFilters = () => {
-    setFilters({
-      Chipset: "",
-      Series: "",
-      VRAM: "",
-    });
+    setChipsetFilter("");
+    setSeriesFilter("");
+    setVramFilter("");
   };
 
-  const filterOptions = useMemo(() => {
-    const uniqueOptions = {
-      Chipset: [...new Set(data.map((item) => item.Chipset))],
-      Series: [...new Set(data.map((item) => item.Series))],
-      VRAM: [...new Set(data.map((item) => item.VRAM))],
-    };
-    return uniqueOptions;
-  }, [data]);
-
-  const filteredData = useMemo(() => {
-    return data.filter((item) => {
-      return (
-        (!filters.Chipset || item.Chipset === filters.Chipset) &&
-        (!filters.Series || item.Series === filters.Series) &&
-        (!filters.VRAM || item.VRAM === filters.VRAM)
-      );
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+  const result = (
+    <ResultsTable
+      sellers={sellers}
+      uploadTime={uploadTime}
+      filteredData={filteredData}
+    />
+  );
 
   const AdminButton = (
     <div className="flex mt-8">
@@ -97,25 +130,25 @@ const Home = () => {
       <div className="w-full lg:w-1/3 p-4 bg-white shadow-lg">
         <h2 className="text-2xl font-semibold mb-4">Filters</h2>
 
-        <FilterSection
-          title="Chipset"
-          options={filterOptions.Chipset}
-          selectedValue={filters.Chipset}
-          onChange={(value) => handleFilterChange("Chipset", value)}
+        <h2 className="text-lg font-bold mb-2">Chipset</h2>
+        <Filter
+          filtersTypes={filteredChipsets1}
+          selectedFilterType={chipsetFilter}
+          handleChange={handleChipsetChange}
         />
 
-        <FilterSection
-          title="Series"
-          options={filterOptions.Series}
-          selectedValue={filters.Series}
-          onChange={(value) => handleFilterChange("Series", value)}
+        <h2 className="text-lg font-bold my-2">Series</h2>
+        <Filter
+          filtersTypes={filteredSeries1}
+          selectedFilterType={seriesFilter}
+          handleChange={handleSeriesChange}
         />
 
-        <FilterSection
-          title="VRAM"
-          options={filterOptions.VRAM}
-          selectedValue={filters.VRAM}
-          onChange={(value) => handleFilterChange("VRAM", value)}
+        <h2 className="text-lg font-bold my-2">Vram</h2>
+        <Filter
+          filtersTypes={filteredVram1}
+          selectedFilterType={vramFilter}
+          handleChange={handleVramChange}
         />
       </div>
 
@@ -123,7 +156,7 @@ const Home = () => {
         {heading}
         <div className="flex items-center gap-4 my-4 justify-between">
           <div className="flex items-center gap-4">
-            {checkFilterAppy(filters) && (
+            {checkFilterAppy(chipsetFilter, seriesFilter, vramFilter) && (
               <button
                 onClick={handleClearFilters}
                 className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
@@ -132,41 +165,60 @@ const Home = () => {
               </button>
             )}
 
-            {Object.keys(filters)?.map((key) => (
-              <Fragment key={key}>
-                {filters[key] && (
-                  <button
-                    key={key}
-                    disabled
-                    className="bg-blue-600 text-white px-4 py-2 rounded opacity-[0.5]"
-                  >
-                    {filters[key]}
-                  </button>
-                )}
-              </Fragment>
-            ))}
+            {chipsetFilter && (
+              <button
+                disabled
+                className="bg-blue-600 text-white px-4 py-2 rounded opacity-[0.5]"
+              >
+                {chipsetFilter}
+              </button>
+            )}
+
+            {seriesFilter && (
+              <button
+                disabled
+                className="bg-blue-600 text-white px-4 py-2 rounded opacity-[0.5]"
+              >
+                {seriesFilter}
+              </button>
+            )}
+
+            {vramFilter && (
+              <button
+                disabled
+                className="bg-blue-600 text-white px-4 py-2 rounded opacity-[0.5]"
+              >
+                {vramFilter}
+              </button>
+            )}
           </div>
 
           {AdminButton}
         </div>
 
         <h2 className="text-xl font-semibold mb-4">Results</h2>
-        <ResultsTable
-          sellers={sellers}
-          filters={filters}
-          uploadTime={uploadTime}
-          filteredData={filteredData}
-        />
+        {filteredData.length === 0 ||
+        !isShowData(chipsetFilter, seriesFilter, vramFilter) ? (
+          <p className="text-gray-600">
+            No data to display. Apply filters to see results.
+          </p>
+        ) : (
+          <Fragment>
+            {filteredData?.length > 1 &&
+              isShowData(chipsetFilter, seriesFilter, vramFilter) && (
+                <Fragment> {result}</Fragment>
+              )}
+            {filteredData?.length === 1 && <Fragment> {result}</Fragment>}
+          </Fragment>
+        )}
 
         <div className="mt-auto">
           <span className="text-xl font-semibold mb-4">Comments</span>
           <div dangerouslySetInnerHTML={{ __html: comment }} />
         </div>
       </div>
-
-      <Loader loading={loading} />
     </div>
   );
 };
 
-export default Home;
+export default FilterComponent;

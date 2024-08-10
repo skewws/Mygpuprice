@@ -44,30 +44,27 @@ export const cleanedData = (data) => {
   return cleanedData ?? [];
 };
 
-export const checkFilterAppy = (filters) => {
-  let isValid = false;
-  for (let key in filters) {
-    if (filters[key]) {
-      isValid = true;
-      break;
-    }
-  }
-  return isValid;
+export const checkFilterAppy = (chipsetFilter, seriesFilter, vramFilter) => {
+  return chipsetFilter !== "" || seriesFilter !== "" || vramFilter !== "";
 };
 
-export const sortByTotalIntegers = (arr) => {
-  return arr.sort((a, b) => {
-    const sumIntegers = (obj) => {
-      return Object.values(obj)
-        .filter((value) => typeof value === "number" && Number.isInteger(value))
-        .reduce((sum, value) => sum + value, 0);
-    };
+const sortSellersByPrice = (sellers) => {
+  return sellers.sort((a, b) => b.price - a.price);
+};
 
-    const totalA = sumIntegers(a);
-    const totalB = sumIntegers(b);
+export const sortByTotalIntegers = (arr, sellers) => {
+  if (arr?.length > 0) {
+    const obj = arr[0];
+    const sellersN = [];
+    sellers?.forEach((seller) => {
+      if (obj[seller.name]) {
+        sellersN.push({ ...seller, price: obj[seller.name] });
+      }
+    });
 
-    return totalB - totalA;
-  });
+    return sortSellersByPrice(sellersN);
+  }
+  return [];
 };
 
 export const getSheet = () => {
@@ -91,4 +88,39 @@ export const getSheet = () => {
   const json = XLSX.utils.sheet_to_json(sheet, { header: columns });
 
   return { json, columns };
+};
+
+function transformKeys(obj) {
+  const transformedObj = {};
+
+  for (const key in obj) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (obj.hasOwnProperty(key)) {
+      const newKey = key.toLowerCase().replace(/\s+/g, "");
+      transformedObj[newKey] = obj[key];
+    }
+  }
+
+  return transformedObj;
+}
+
+export const transformArray = (data) => {
+  if (data?.length > 0) {
+    return data.map(transformKeys);
+  } else return [];
+};
+
+const removeKeys = (obj, keysToRemove) => {
+  const updatedObj = { ...obj };
+
+  keysToRemove.forEach((key) => delete updatedObj[key]);
+
+  return updatedObj;
+};
+
+export const removeKeysFromArray = (data) => {
+  const keysToRemove = ["Chipset", "Series", "VRAM"];
+  if (data?.length > 0) {
+    return data?.map((obj) => removeKeys(obj, keysToRemove));
+  } else return [];
 };
