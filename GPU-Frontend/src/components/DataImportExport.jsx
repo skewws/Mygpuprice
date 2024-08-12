@@ -50,6 +50,7 @@ const DataEntry = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  console.log(columnNames,"columnNames");
   useEffect(() => {
     if (file && isUploaded) {
       handleSaveFile();
@@ -124,8 +125,8 @@ const DataEntry = () => {
 
   return (
     <div className="flex flex-col w-full h-full">
-      <div className="p-4 bg-gray-100 border-b flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Data Entry</h2>
+      <div className="p-4 border-b border border-color-[#000] flex justify-between items-center">
+      <h2 className="text-[19px] font-bold">Data Entry</h2>
         <div className="flex space-x-4 items-center flex-wrap">
           {uploadTime && (
             <div className="">
@@ -156,7 +157,7 @@ const DataEntry = () => {
         </div>
       </div>
       <div className="flex-grow p-4">
-        <div className="overflow-x-auto">
+        {/* <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-300 rounded">
             <tbody>
               {fileContent.length === 0 ? (
@@ -173,6 +174,9 @@ const DataEntry = () => {
                   <tr
                     key={rowIndex}
                     className={`${rowIndex < 1 ? "font-bold" : ""}`}
+                    style={{
+                      backgroundColor: rowIndex % 2 === 0 ? "#F2F2F2" : "#FFFFFF",
+                    }}
                   >
                     {columnNames.map((colName, colIndex) => (
                       <td key={colIndex} className="py-2 px-4 border-b">
@@ -184,7 +188,45 @@ const DataEntry = () => {
               )}
             </tbody>
           </table>
-        </div>
+        </div> */}
+        <div className="overflow-x-auto">
+  <table className="min-w-full bg-white border border-gray-300 rounded">
+    <thead>
+      <tr className="bg-white">
+        {columnNames.map((colName, colIndex) => (
+          <th key={colIndex} className="py-2 px-4 border-b">
+            {colName}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {fileContent.length === 0 ? (
+        <tr>
+          <td colSpan={columnNames.length} className="py-4 text-center">
+            No data available
+          </td>
+        </tr>
+      ) : (
+        fileContent.map((row, rowIndex) => (
+          <tr
+            key={rowIndex}
+            style={{
+              backgroundColor: rowIndex % 2 === 0 ? "#F2F2F2" : "#FFFFFF",
+            }}
+          >
+            {columnNames.map((colName, colIndex) => (
+              <td key={colIndex} className="py-2 px-4 border-b">
+                {row[colName] || "-"}
+              </td>
+            ))}
+          </tr>
+        ))
+      )}
+    </tbody>
+  </table>
+</div>
+
       </div>
       <Loader loading={loading} />
     </div>

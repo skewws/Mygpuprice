@@ -27,8 +27,8 @@ const ResultsTable = ({ filteredData, sellers, uploadTime }) => {
           )
         )}
         {uploadTime && (
-          <div className="m-5">
-            <span className="text-lg font-semibold">Last Updated: </span>
+          <div className="m-5 text-left">
+            <span className="text-lg font-semibold ">Last Updated: </span>
             {uploadTime}
           </div>
         )}

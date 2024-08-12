@@ -97,7 +97,7 @@ const FilterComponent = () => {
   const AdminButton = (
     <div className="flex mt-8">
       <button
-        className="bg-blue-600 text-white px-4 py-2 rounded"
+        className="bg-black text-white px-4 py-2 rounded"
         onClick={() => navigate(!isAuthenticated ? "/login" : "/admin")}
       >
         {!isAuthenticated ? "Sign In" : "Go to Dashboard"}
@@ -126,25 +126,31 @@ const FilterComponent = () => {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
-      <div className="w-full lg:w-1/3 p-4 bg-white shadow-lg">
-        <h2 className="text-2xl font-semibold mb-4">Filters</h2>
+    <div className="flex flex-col lg:flex-row min-h-screen">
+      <div className="w-[22%] p-4 bg-white border border-color-[#dee2e6] shadow-md">
+        <h2 className="text-2xl font-semibold mb-4">Filters </h2>
 
-        <h2 className="text-lg font-bold mb-2">Chipset</h2>
+        <h2 className="font-bold text-base text-left"
+         style={{ color: "#212529" }}
+        >Chipset</h2>
         <Filter
           filtersTypes={filteredChipsets1}
           selectedFilterType={chipsetFilter}
           handleChange={handleChipsetChange}
         />
 
-        <h2 className="text-lg font-bold my-2">Series</h2>
+        <h2 className="font-bold text-base text-left "
+         style={{ color: "#212529" }}
+        >Series</h2>
         <Filter
           filtersTypes={filteredSeries1}
           selectedFilterType={seriesFilter}
           handleChange={handleSeriesChange}
         />
 
-        <h2 className="text-lg font-bold my-2">Vram</h2>
+        <h2 className="font-bold text-base text-left"
+         style={{ color: "#212529" }}
+        >Vram</h2>
         <Filter
           filtersTypes={filteredVram1}
           selectedFilterType={vramFilter}
@@ -159,16 +165,18 @@ const FilterComponent = () => {
             {checkFilterAppy(chipsetFilter, seriesFilter, vramFilter) && (
               <button
                 onClick={handleClearFilters}
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                className="rounded-0 bg-white border px-5 py-2 font-bold"
+              style={{ color: "#212529" }}
               >
-                Clear Filters
+              Clear all filters
               </button>
             )}
 
             {chipsetFilter && (
               <button
                 disabled
-                className="bg-blue-600 text-white px-4 py-2 rounded opacity-[0.5]"
+               className="rounded-0 bg-[#DFE1E5] border  px-5 py-2 fw-bold btn btn-primary"
+               style={{ color: "#212529" }}
               >
                 {chipsetFilter}
               </button>
@@ -177,7 +185,8 @@ const FilterComponent = () => {
             {seriesFilter && (
               <button
                 disabled
-                className="bg-blue-600 text-white px-4 py-2 rounded opacity-[0.5]"
+                 className="rounded-0 bg-[#DFE1E5] border text-dark px-5 py-2 fw-bold btn btn-primary"
+                 style={{ color: "#212529" }}
               >
                 {seriesFilter}
               </button>
@@ -186,7 +195,8 @@ const FilterComponent = () => {
             {vramFilter && (
               <button
                 disabled
-                className="bg-blue-600 text-white px-4 py-2 rounded opacity-[0.5]"
+                 className="rounded-0 bg-[#DFE1E5] border text-dark px-5 py-2 fw-bold btn btn-primary"
+                 style={{ color: "#212529" }}
               >
                 {vramFilter}
               </button>

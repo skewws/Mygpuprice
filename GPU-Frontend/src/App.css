@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+   max-width: 1280px; 
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -39,4 +39,23 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.login-btn {
+  align-self: center;
+  padding: 7px 30px;
+  border: none;
+  color: #fff;
+  background-color: #990000;
+  box-shadow: 2px 2px 2px #990000;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in;
+  display:block;
+  margin: 0 auto;
+}
+
+.text-dark {
+  --bs-text-opacity: 1;
+  color: rgba(var(--bs-dark-rgb), var(--bs-text-opacity)) !important;
 }

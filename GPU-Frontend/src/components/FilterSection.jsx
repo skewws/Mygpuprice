@@ -14,6 +14,7 @@ const FilterSection = ({ title, options, selectedValue, onChange }) => {
           <label htmlFor={`${title}-${option}`} className="ml-2 text-gray-700">
             {option}
           </label>
+
         </div>
       ))}
     </div>

@@ -6,7 +6,7 @@ const Loader = ({ loading }) => {
     <>
       {loading && (
         <div className="flex-container overlay">
-          <BeatLoader color="blue" loading={loading} size={30} />
+          <BeatLoader color="#198754" loading={loading} size={30} />
         </div>
       )}
     </>

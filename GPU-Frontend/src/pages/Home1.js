@@ -96,9 +96,9 @@ const Home = () => {
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
       <div className="w-full lg:w-1/3 p-4 bg-white shadow-lg">
         <h2 className="text-2xl font-semibold mb-4">Filters</h2>
-
         <FilterSection
           title="Chipset"
+          style={{ color: "#212529" }}
           options={filterOptions.Chipset}
           selectedValue={filters.Chipset}
           onChange={(value) => handleFilterChange("Chipset", value)}

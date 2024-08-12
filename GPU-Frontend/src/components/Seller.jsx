@@ -69,8 +69,8 @@ const Seller = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex justify-between p-4 bg-gray-100 border-b">
-        <h2 className="text-xl font-semibold">Sellers</h2>
+      <div className="flex justify-between p-4  border-b border border-color-[#000]">
+      <h2 className="text-[19px] font-bold">Sellers</h2>
       </div>
       {editSellerId === null ? (
         <div className="flex flex-col p-4 flex-grow">
@@ -91,7 +91,8 @@ const Seller = () => {
             />
             <button
               onClick={handleAddSeller}
-              className="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700"
+              className="text-white px-4 py-2 rounded shadow hover:bg-green-700"
+              style={{ backgroundColor: "#198754" }}
             >
               Add new seller
             </button>
