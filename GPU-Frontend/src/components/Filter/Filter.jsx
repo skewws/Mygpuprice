@@ -17,8 +17,8 @@ const Filter = ({ filtersTypes, selectedFilterType, handleChange }) => {
   return (
     <div className="filter-container max-h-[500px] overflow-auto">
       {localFilter?.length === 1 &&
-        localFilter?.map((chipset) => (
-          <div key={chipset} className="flex items-center">
+        localFilter?.map((chipset,index) => (
+          <div key={chipset+index} className="flex items-center">
             <input
               type="checkbox"
               className="form-checkbox h-4 w-4 text-blue-600"
@@ -26,7 +26,7 @@ const Filter = ({ filtersTypes, selectedFilterType, handleChange }) => {
               readOnly
             />
             <label className="ml-2 text-gray-700">
-              {chipset.toLowerCase()}
+              {chipset}
             </label>
           </div>
         ))}
@@ -40,7 +40,7 @@ const Filter = ({ filtersTypes, selectedFilterType, handleChange }) => {
               onChange={() => handleChange(chipset)}
             />
             <label className="ml-2 text-gray-700">
-              {chipset.toLowerCase()}
+              {chipset}
             </label>
           </div>
         ))}

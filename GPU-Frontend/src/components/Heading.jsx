@@ -4,42 +4,44 @@ import "react-quill/dist/quill.snow.css";
 import { useAxiosWithErrorHandling } from "../api/axios";
 import { toast } from "react-toastify";
 import Loader from "./loader";
-import useFetchComment from "../hooks/useFetchComment";
-import './../styles/index.css'
+import useFetchHeading from "../hooks/useFetchHeading";
 import { formats, quillModules } from "../utils/functions";
+import './../styles/index.css'
 
-const Comments = () => {
-  const comment = useFetchComment();
-  const [editorValue, setEditorValue] = useState(comment);
+const Heading = () => {
+  const heading = useFetchHeading();
+  const [editorValue, setEditorValue] = useState(heading);
   const { axiosInstance, loading } = useAxiosWithErrorHandling();
 
   const handleSubmit = async () => {
     try {
-      await axiosInstance.post("/comment/save", { content: editorValue });
-      toast.success("Comment has been saved");
+      await axiosInstance.post("/heading/save", { content: editorValue || heading });
+      toast.success("Heading has been saved");
     } catch (error) {
-      toast.error("Failed to submit comment.");
+      toast.error("Failed to submit heading.");
     }
   };
 
+
   return (
     <div className="p-4 bg-white shadow-lg rounded">
-      <h2 className="text-2xl font-semibold mb-4">Comments</h2>
+      <h2 className="text-2xl font-semibold mb-4">Heading</h2>
       <div className="editor-container">
         <ReactQuill
-          value={editorValue || comment}
+          value={editorValue || heading}
           onChange={setEditorValue}
-          placeholder="Write your comment here..."
+          placeholder="Write your heading here..."
           modules={quillModules}
           formats={formats}
           theme="snow" 
+         
         />
       </div>
       <button
         onClick={handleSubmit}
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4"
       >
-        Save Comment
+        Save Heading
       </button>
 
       <style>{`
@@ -53,4 +55,4 @@ const Comments = () => {
   );
 };
 
-export default Comments;
+export default Heading;

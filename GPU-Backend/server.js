@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const authRoutes = require("./routes/auth");
 const fileContentRoutes = require("./routes/fileContent");
 const commentRoutes = require("./routes/comment");
+const headingRoutes = require("./routes/heading");
 const sellerRoutes = require("./routes/sellers");
 const fileRoutes = require("./routes/files");
 
@@ -21,6 +22,8 @@ app.use("/api/sellers", sellerRoutes);
 app.use("/", fileRoutes);
 app.use("/fileContent", fileContentRoutes);
 app.use("/comment", commentRoutes);
+app.use("/heading", headingRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 

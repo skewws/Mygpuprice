@@ -75,3 +75,25 @@ export const filteredVram = (data, selectedChipset, selectedSeries) => {
 export const isShowData = (chipset, series, vram) => {
   return chipset !== "" && series !== "" && vram !== "";
 };
+
+
+export const quillModules = {
+  toolbar: [
+    [{ 'size': ['small', false, 'large', 'huge'] }],  
+    ['bold', 'italic', 'underline', 'strike'],        
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],     
+    ['link', 'image'],                                
+  ],
+};
+
+const modules = {
+  toolbar: [
+    [{ 'size': ['1', '2', '3', '4', '5'] }],  // Custom font sizes 1-5
+    ['bold', 'italic', 'underline'],          // Other toolbar options
+  ],
+};
+
+
+export const formats = [
+  'size', 'bold', 'italic', 'underline', 'strike', 'list', 'bullet', 'link', 'image'
+];
