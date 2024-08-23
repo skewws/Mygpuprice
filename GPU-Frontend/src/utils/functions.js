@@ -86,13 +86,6 @@ export const quillModules = {
   ],
 };
 
-const modules = {
-  toolbar: [
-    [{ 'size': ['1', '2', '3', '4', '5'] }],  // Custom font sizes 1-5
-    ['bold', 'italic', 'underline'],          // Other toolbar options
-  ],
-};
-
 
 export const formats = [
   'size', 'bold', 'italic', 'underline', 'strike', 'list', 'bullet', 'link', 'image'
