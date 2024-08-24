@@ -8,16 +8,13 @@ import {
   isShowData,
 } from "../utils/functions";
 import ResultsTable from "../components/ResultsTable";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import useFetchComment from "../hooks/useFetchComment";
 import { checkFilterAppy } from "../utils/helper";
 import Filter from "../components/Filter/Filter";
 import useFetchHeading from "../hooks/useFetchHeading";
+import { toast } from "react-toastify";
 
 const FilterComponent = () => {
-  let navigate = useNavigate();
-  const isAuthenticated = useAuth();
   const comment = useFetchComment();
   const dynamicHeading = useFetchHeading();
   const { axiosInstance } = useAxiosWithErrorHandling();
@@ -31,7 +28,6 @@ const FilterComponent = () => {
   const [filteredVram1, setVram1] = useState([]);
   const [sellers, setSellers] = useState([]);
 
-
   const fetchSellers = async () => {
     try {
       const response = await axiosInstance.get("/api/sellers");
@@ -41,10 +37,12 @@ const FilterComponent = () => {
       toast.error("Failed to fetch sellers:");
     }
   };
-
+  useEffect(() => {
+    fetchSellers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    fetchSellers()
     const fChipsets = filteredChipsets(data, seriesFilter, vramFilter);
     const fSeries = filteredSeries(data, chipsetFilter, vramFilter);
     const fVram = filteredVram(data, chipsetFilter, seriesFilter);
@@ -106,21 +104,9 @@ const FilterComponent = () => {
     />
   );
 
-  const AdminButton = (
-    <div className="flex mt-8">
-      <button
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-        onClick={() => navigate(!isAuthenticated ? "/login" : "/admin")}
-      >
-        {!isAuthenticated ? "Sign In" : "Go to Dashboard"}
-      </button>
-    </div>
-  );
-
   const heading = (
     <div className="flex flex-col text-center">
-      <div dangerouslySetInnerHTML={{__html:dynamicHeading}}>
-      </div>
+      <div dangerouslySetInnerHTML={{ __html: dynamicHeading }}></div>
     </div>
   );
 
@@ -129,14 +115,16 @@ const FilterComponent = () => {
       <div className="flex py-6 flex-col gap-3 justify-center items-center">
         {heading}
         <h2 className="text-2xl font-semibold mb-4">No Data Found</h2>
-        {AdminButton}
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-100 w-full p-4 bg-white">
-      {heading}
+      <div className="flex flex-col items-center gap-4 mt-4">
+        <img src="/assets/logo.png" alt="logo" className="max-w-[150px]" />
+        {heading}
+      </div>
       <div className="max-w-[700px] m-auto flex flex-col">
         <div className="flex flex-col md:flex-row justify-between mt-6">
           <div className="">
@@ -163,12 +151,12 @@ const FilterComponent = () => {
           </div>
 
           <div className="flex flex-col">
-            <div className="flex items-center gap-4 my-4 justify-between">
+            <div className="flex items-center gap-4 mb-4 mt-8 md:mt-0 justify-between">
               <div className="flex items-center gap-4">
                 {checkFilterAppy(chipsetFilter, seriesFilter, vramFilter) && (
                   <button
                     onClick={handleClearFilters}
-                    className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                    className="border border-black bg-white text-black px-3 py-2 rounded"
                   >
                     Clear Filters
                   </button>
@@ -177,7 +165,7 @@ const FilterComponent = () => {
                 {chipsetFilter && (
                   <button
                     disabled
-                    className="bg-blue-600 text-white px-4 py-2 rounded opacity-[0.5]"
+                    className="bg-gray-300 text-gray-700 px-3 py-2 rounded cursor-not-allowed"
                   >
                     {chipsetFilter}
                   </button>
@@ -186,7 +174,7 @@ const FilterComponent = () => {
                 {seriesFilter && (
                   <button
                     disabled
-                    className="bg-blue-600 text-white px-4 py-2 rounded opacity-[0.5]"
+                    className="bg-gray-300 text-gray-700 px-3 py-2 rounded cursor-not-allowed"
                   >
                     {seriesFilter}
                   </button>
@@ -195,7 +183,7 @@ const FilterComponent = () => {
                 {vramFilter && (
                   <button
                     disabled
-                    className="bg-blue-600 text-white px-4 py-2 rounded opacity-[0.5]"
+                    className="bg-gray-300 text-gray-700 px-3 py-2 rounded cursor-not-allowed"
                   >
                     {vramFilter}
                   </button>
@@ -204,7 +192,7 @@ const FilterComponent = () => {
             </div>
 
             {filteredData.length === 0 ||
-              !isShowData(chipsetFilter, seriesFilter, vramFilter) ? (
+            !isShowData(chipsetFilter, seriesFilter, vramFilter) ? (
               <p className="text-gray-600">
                 No data to display. Apply filters to see results.
               </p>
@@ -212,11 +200,12 @@ const FilterComponent = () => {
               <Fragment>
                 {filteredData?.length > 0 &&
                   isShowData(chipsetFilter, seriesFilter, vramFilter) && (
-                    <Fragment> {result}
+                    <Fragment>
+                      {" "}
+                      {result}
                       {uploadTime && (
                         <div className="ml-auto md:pr-0 pr-36 text-xs">
-                          Last Updated: {" "}
-                          {uploadTime}
+                          Last Updated: {uploadTime}
                         </div>
                       )}
                     </Fragment>
