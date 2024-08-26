@@ -158,7 +158,7 @@ const FilterComponent = () => {
 
           <div className="flex flex-col">
             <div className="flex items-center gap-4 mb-4 mt-8 md:mt-0 justify-between">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 flex-wrap md:flex-nowrap">
                 {checkFilterAppy(chipsetFilter, seriesFilter, vramFilter) && (
                   <button
                     onClick={handleClearFilters}
