@@ -1,12 +1,12 @@
 import { removeKeysFromArray, sortByTotalIntegers } from "../utils/helper";
 
-const ResultsTable = ({ filteredData, sellers, uploadTime }) => {
+const ResultsTable = ({ filteredData, sellers,uploadTime }) => {
   return (
     <table className="min-w-full bg-white rounded mb-4">
       <thead>
         <tr>
           <th className="py-2 px-4 border-b text-left">Website</th>
-          <th className="py-2 px-4 border-b text-left">Offer (Estimated)</th>
+          <th className="py-2 px-4 border-b text-left flex flex-col items-center"> <span> Offer </span> <span> (Estimated)</span></th>
         </tr>
       </thead>
       <tbody>
@@ -16,8 +16,8 @@ const ResultsTable = ({ filteredData, sellers, uploadTime }) => {
               <td>
                 <div className="py-2 px-4 my-2">{seller.name}</div>
               </td>
-              <td>
-                <a href={seller?.link} target="_blank">
+              <td className="">
+                <a href={seller?.link} target="_blank" className="flex justify-center">
                   <div className="py-2 px-4 my-2 w-[80px] border border-black bg-white text-black rounded">
                     ${seller.price}
                   </div>
@@ -25,12 +25,6 @@ const ResultsTable = ({ filteredData, sellers, uploadTime }) => {
               </td>
             </tr>
           )
-        )}
-        {uploadTime && (
-          <div className="m-5 text-left">
-            <span className="text-lg font-semibold ">Last Updated: </span>
-            {uploadTime}
-          </div>
         )}
       </tbody>
     </table>

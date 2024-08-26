@@ -8,22 +8,18 @@ import {
   isShowData,
 } from "../utils/functions";
 import ResultsTable from "../components/ResultsTable";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import useFetchComment from "../hooks/useFetchComment";
 import { checkFilterAppy } from "../utils/helper";
 import Filter from "../components/Filter/Filter";
+import useFetchHeading from "../hooks/useFetchHeading";
+import { toast } from "react-toastify";
+import Loader from "../components/loader";
 
 const FilterComponent = () => {
-  let navigate = useNavigate();
-  const isAuthenticated = useAuth();
   const comment = useFetchComment();
-  const { axiosInstance } = useAxiosWithErrorHandling();
+  const dynamicHeading = useFetchHeading();
+  const { axiosInstance,loading } = useAxiosWithErrorHandling();
   const { data, uploadTime } = useFetchContent(axiosInstance);
-
-  const sellers = localStorage.getItem("sellers")
-    ? JSON.parse(localStorage.getItem("sellers"))
-    : [];
 
   const [chipsetFilter, setChipsetFilter] = useState("");
   const [seriesFilter, setSeriesFilter] = useState("");
@@ -31,6 +27,21 @@ const FilterComponent = () => {
   const [filteredChipsets1, seChipsett1] = useState([]);
   const [filteredSeries1, setSeries1] = useState([]);
   const [filteredVram1, setVram1] = useState([]);
+  const [sellers, setSellers] = useState([]);
+
+  const fetchSellers = async () => {
+    try {
+      const response = await axiosInstance.get("/api/sellers");
+      localStorage.setItem("sellers", JSON.stringify(response.data));
+      setSellers(response.data);
+    } catch (error) {
+      toast.error("Failed to fetch sellers:");
+    }
+  };
+  useEffect(() => {
+    fetchSellers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const fChipsets = filteredChipsets(data, seriesFilter, vramFilter);
@@ -94,24 +105,9 @@ const FilterComponent = () => {
     />
   );
 
-  const AdminButton = (
-    <div className="flex mt-8">
-      <button
-        className="bg-black text-white px-4 py-2 rounded"
-        onClick={() => navigate(!isAuthenticated ? "/login" : "/admin")}
-      >
-        {!isAuthenticated ? "Sign In" : "Go to Dashboard"}
-      </button>
-    </div>
-  );
-
   const heading = (
     <div className="flex flex-col text-center">
-      <h1 className="text-2xl font-semibold">GPU Sell Price Tracker</h1>
-      <p>
-        Compare price from different websites in order to get most money for
-        your used GPU
-      </p>
+      <div dangerouslySetInnerHTML={{ __html: dynamicHeading }}></div>
     </div>
   );
 
@@ -120,113 +116,112 @@ const FilterComponent = () => {
       <div className="flex py-6 flex-col gap-3 justify-center items-center">
         {heading}
         <h2 className="text-2xl font-semibold mb-4">No Data Found</h2>
-        {AdminButton}
+        <Loader loading={loading}/>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen">
-      <div className="w-[22%] p-4 bg-white border border-color-[#dee2e6] shadow-md">
-        <h2 className="text-2xl font-semibold mb-4">Filters </h2>
-
-        <h2 className="font-bold text-base text-left"
-         style={{ color: "#212529" }}
-        >Chipset</h2>
-        <Filter
-          filtersTypes={filteredChipsets1}
-          selectedFilterType={chipsetFilter}
-          handleChange={handleChipsetChange}
-        />
-
-        <h2 className="font-bold text-base text-left "
-         style={{ color: "#212529" }}
-        >Series</h2>
-        <Filter
-          filtersTypes={filteredSeries1}
-          selectedFilterType={seriesFilter}
-          handleChange={handleSeriesChange}
-        />
-
-        <h2 className="font-bold text-base text-left"
-         style={{ color: "#212529" }}
-        >Vram</h2>
-        <Filter
-          filtersTypes={filteredVram1}
-          selectedFilterType={vramFilter}
-          handleChange={handleVramChange}
-        />
-      </div>
-
-      <div className="w-2/3 p-4 flex flex-col">
+    <div className="min-h-screen bg-gray-100 w-full p-4 bg-white">
+      <div className="flex flex-col items-center gap-4 mt-4">
+        <img src="/assets/logo.png" alt="logo" className="max-w-[150px]" />
         {heading}
-        <div className="flex items-center gap-4 my-4 justify-between">
-          <div className="flex items-center gap-4">
-            {checkFilterAppy(chipsetFilter, seriesFilter, vramFilter) && (
-              <button
-                onClick={handleClearFilters}
-                className="rounded-0 bg-white border px-5 py-2 font-bold"
-              style={{ color: "#212529" }}
-              >
-              Clear all filters
-              </button>
-            )}
+      </div>
+      <div className="max-w-[700px] m-auto flex flex-col">
+        <div className="flex flex-col md:flex-row justify-between mt-6">
+          <div className="">
+            <h2 className="text-lg font-bold mb-2">Chipset</h2>
+            <Filter
+              filtersTypes={filteredChipsets1}
+              selectedFilterType={chipsetFilter}
+              handleChange={handleChipsetChange}
+            />
 
-            {chipsetFilter && (
-              <button
-                disabled
-               className="rounded-0 bg-[#DFE1E5] border  px-5 py-2 fw-bold btn btn-primary"
-               style={{ color: "#212529" }}
-              >
-                {chipsetFilter}
-              </button>
-            )}
+            <h2 className="text-lg font-bold my-2">Series</h2>
+            <Filter
+              filtersTypes={filteredSeries1}
+              selectedFilterType={seriesFilter}
+              handleChange={handleSeriesChange}
+            />
 
-            {seriesFilter && (
-              <button
-                disabled
-                 className="rounded-0 bg-[#DFE1E5] border text-dark px-5 py-2 fw-bold btn btn-primary"
-                 style={{ color: "#212529" }}
-              >
-                {seriesFilter}
-              </button>
-            )}
-
-            {vramFilter && (
-              <button
-                disabled
-                 className="rounded-0 bg-[#DFE1E5] border text-dark px-5 py-2 fw-bold btn btn-primary"
-                 style={{ color: "#212529" }}
-              >
-                {vramFilter}
-              </button>
-            )}
+            <h2 className="text-lg font-bold my-2">Vram</h2>
+            <Filter
+              filtersTypes={filteredVram1}
+              selectedFilterType={vramFilter}
+              handleChange={handleVramChange}
+            />
           </div>
 
-          {AdminButton}
+          <div className="flex flex-col">
+            <div className="flex items-center gap-4 mb-4 mt-8 md:mt-0 justify-between">
+              <div className="flex items-center gap-4">
+                {checkFilterAppy(chipsetFilter, seriesFilter, vramFilter) && (
+                  <button
+                    onClick={handleClearFilters}
+                    className="border border-black bg-white text-black px-3 py-2 rounded"
+                  >
+                    Clear Filters
+                  </button>
+                )}
+
+                {chipsetFilter && (
+                  <button
+                    disabled
+                    className="bg-gray-300 text-gray-700 px-3 py-2 rounded cursor-not-allowed"
+                  >
+                    {chipsetFilter}
+                  </button>
+                )}
+
+                {seriesFilter && (
+                  <button
+                    disabled
+                    className="bg-gray-300 text-gray-700 px-3 py-2 rounded cursor-not-allowed"
+                  >
+                    {seriesFilter}
+                  </button>
+                )}
+
+                {vramFilter && (
+                  <button
+                    disabled
+                    className="bg-gray-300 text-gray-700 px-3 py-2 rounded cursor-not-allowed"
+                  >
+                    {vramFilter}
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {filteredData.length === 0 ||
+            !isShowData(chipsetFilter, seriesFilter, vramFilter) ? (
+              <p className="text-gray-600">
+                No data to display. Apply filters to see results.
+              </p>
+            ) : (
+              <Fragment>
+                {filteredData?.length > 0 &&
+                  isShowData(chipsetFilter, seriesFilter, vramFilter) && (
+                    <Fragment>
+                      {" "}
+                      {result}
+                      {uploadTime && (
+                        <div className="ml-auto md:pr-0 pr-36 text-xs">
+                          Last Updated: {uploadTime}
+                        </div>
+                      )}
+                    </Fragment>
+                  )}
+                {/* {filteredData?.length === 1 && <Fragment> {result}</Fragment>} */}
+              </Fragment>
+            )}
+          </div>
         </div>
-
-        <h2 className="text-xl font-semibold mb-4">Results</h2>
-        {filteredData.length === 0 ||
-        !isShowData(chipsetFilter, seriesFilter, vramFilter) ? (
-          <p className="text-gray-600">
-            No data to display. Apply filters to see results.
-          </p>
-        ) : (
-          <Fragment>
-            {filteredData?.length > 1 &&
-              isShowData(chipsetFilter, seriesFilter, vramFilter) && (
-                <Fragment> {result}</Fragment>
-              )}
-            {filteredData?.length === 1 && <Fragment> {result}</Fragment>}
-          </Fragment>
-        )}
-
-        <div className="mt-auto">
-          <span className="text-xl font-semibold mb-4">Comments</span>
+        <div className="flex justify-start mt-10 text-sm">
           <div dangerouslySetInnerHTML={{ __html: comment }} />
         </div>
       </div>
+      <Loader loading={loading}/>
     </div>
   );
 };

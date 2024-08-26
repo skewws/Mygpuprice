@@ -17,49 +17,35 @@ const Filter = ({ filtersTypes, selectedFilterType, handleChange }) => {
   return (
     <div className="filter-container max-h-[500px] overflow-auto">
       {localFilter?.length === 1 &&
-        localFilter?.map((chipset) => (
-          // <div key={chipset} className="flex items-center mb-2">
-          //   <input
-          //     type="checkbox"
-          //     className="form-checkbox h-4 w-4 text-blue-600 bg-white border-color[#dee2e6] border-1 "
-          //     checked={true}
-          //     readOnly
-          //   />
-          //   <label className="ml-2 text-gray-700 "
-          //     style={{ color: "#212529" }}>
-          //     {chipset.toLowerCase()} 
-          //   </label>
-          // </div>
-           <div key={chipset} className="flex items-center ">
-           <label className="cont">
-             <input
-               type="checkbox"
-               className="form-checkbox"
-               checked={true}
-               readOnly
-             />
-             <span className="checkmark"></span>
-             <span className="label-text">{chipset.toLowerCase()}</span>
-           </label>
-         </div>
+        localFilter?.map((chipset,index) => (
+          <div key={chipset+index} className="flex items-center">
+            <input
+              type="checkbox"
+              className="form-checkbox h-4 w-4 text-blue-600"
+              checked={true}
+              readOnly
+            />
+            <label className="ml-2 text-gray-700">
+              {chipset}
+            </label>
+          </div>
         ))}
-       {localFilter?.length > 1 &&
-  localFilter?.map((chipset) => (
-    <div key={chipset} className="flex items-center">
-      <label className="cont">
-        <input
-          type="checkbox"
-          className="form-checkbox"
-          checked={selectedFilterType === chipset}
-          onChange={() => handleChange(chipset)}
-        />
-        <span className="checkmark"></span>
-        <span className="label-text">{chipset.toLowerCase()}</span>
-      </label>
-    </div>
-  ))}
-      {filtersTypes.length > 6 && (
-        <div onClick={handleSetMore} className="cursor-pointer ">
+      {localFilter?.length > 1 &&
+        localFilter?.map((chipset) => (
+          <div key={chipset} className="flex items-center">
+            <input
+              type="checkbox"
+              className="form-checkbox h-4 w-4 text-blue-600"
+              checked={selectedFilterType === chipset}
+              onChange={() => handleChange(chipset)}
+            />
+            <label className="ml-2 text-gray-700">
+              {chipset}
+            </label>
+          </div>
+        ))}
+      {localFilter.length > 15 && (
+        <div onClick={handleSetMore} className="cursor-pointer mt-2">
           {!showMore ? (
             <div className="flex gap-2 items-center mb-4">
               <img src="/assets/square.png" className="h-4 w-4" alt="plus" />

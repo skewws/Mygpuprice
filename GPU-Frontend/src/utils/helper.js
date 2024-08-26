@@ -96,7 +96,7 @@ function transformKeys(obj) {
   for (const key in obj) {
     // eslint-disable-next-line no-prototype-builtins
     if (obj.hasOwnProperty(key)) {
-      const newKey = key.toLowerCase().replace(/\s+/g, "");
+      const newKey = key?.toLowerCase().replace(/\s+/g, "");
       transformedObj[newKey] = obj[key];
     }
   }

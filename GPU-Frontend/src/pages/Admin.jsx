@@ -5,6 +5,7 @@ import EditEntry from "../components/EditEntry";
 import Comments from "../components/AddComment";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import Heading from "../components/Heading";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("Seller");
@@ -18,6 +19,8 @@ const Admin = () => {
         return <DataEntry />;
       case "Edit Entry":
         return <EditEntry />;
+      case "Heading":
+        return <Heading />;
       case "Comments":
         return <Comments />;
       default:
@@ -36,19 +39,13 @@ const Admin = () => {
        
       >
         <ul className="flex flex-col space-y-2">
-          {["Seller", "Data Entry", "Edit Entry", "Comments"].map((tab) => (
+          {["Seller", "Data Entry", "Edit Entry", "Heading", "Comments"].map((tab) => (
             <li
               key={tab}
-              className={`cursor-pointer px-4 py-3 rounded ${
-                activeTab === tab
-                  ? "text-white"
-                  : "text-black"
-              }`}
-              style={
-                activeTab === tab
-                  ? { backgroundColor: "#198754", fontSize: "18px", fontWeight: "700" }
-                  : {  color: "#000", fontSize: "18px", fontWeight: "700" }
-              }
+              className={`cursor-pointer px-4 py-5 rounded ${activeTab === tab
+                  ? "bg-indigo-600 text-white"
+                  : "bg-white text-gray-900 hover:bg-gray-100"
+                }`}
               onClick={() => setActiveTab(tab)}
             >
               {tab}
