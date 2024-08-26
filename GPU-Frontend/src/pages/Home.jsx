@@ -13,12 +13,11 @@ import { checkFilterAppy } from "../utils/helper";
 import Filter from "../components/Filter/Filter";
 import useFetchHeading from "../hooks/useFetchHeading";
 import { toast } from "react-toastify";
-import Loader from "../components/loader";
 
 const FilterComponent = () => {
   const comment = useFetchComment();
   const dynamicHeading = useFetchHeading();
-  const { axiosInstance,loading } = useAxiosWithErrorHandling();
+  const { axiosInstance } = useAxiosWithErrorHandling();
   const { data, uploadTime } = useFetchContent(axiosInstance);
 
   const [chipsetFilter, setChipsetFilter] = useState("");
@@ -116,7 +115,6 @@ const FilterComponent = () => {
       <div className="flex py-6 flex-col gap-3 justify-center items-center">
         {heading}
         <h2 className="text-2xl font-semibold mb-4">No Data Found</h2>
-        <Loader loading={loading}/>
       </div>
     );
   }
@@ -127,24 +125,30 @@ const FilterComponent = () => {
         <img src="/assets/logo.png" alt="logo" className="max-w-[150px]" />
         {heading}
       </div>
-      <div className="max-w-[700px] m-auto flex flex-col">
+      <div className="max-w-[850px] m-auto flex flex-col">
         <div className="flex flex-col md:flex-row justify-between mt-6">
           <div className="">
-            <h2 className="text-lg font-bold mb-2">Chipset</h2>
+            <h2 className="font-bold text-base text-left"
+              style={{ color: "#212529" }}
+            >Chipset</h2>
             <Filter
               filtersTypes={filteredChipsets1}
               selectedFilterType={chipsetFilter}
               handleChange={handleChipsetChange}
             />
 
-            <h2 className="text-lg font-bold my-2">Series</h2>
+            <h2 className="font-bold text-base text-left mt-2"
+              style={{ color: "#212529" }}
+            >Series</h2>
             <Filter
               filtersTypes={filteredSeries1}
               selectedFilterType={seriesFilter}
               handleChange={handleSeriesChange}
             />
 
-            <h2 className="text-lg font-bold my-2">Vram</h2>
+            <h2 className="font-bold text-base text-left mt-2"
+              style={{ color: "#212529" }}
+            >Vram</h2>
             <Filter
               filtersTypes={filteredVram1}
               selectedFilterType={vramFilter}
@@ -158,16 +162,18 @@ const FilterComponent = () => {
                 {checkFilterAppy(chipsetFilter, seriesFilter, vramFilter) && (
                   <button
                     onClick={handleClearFilters}
-                    className="border border-black bg-white text-black px-3 py-2 rounded"
+                    className="rounded-0 bg-white border text-sm px-5 py-2 font-bold max-h-[80px]"
+                    style={{ color: "#212529" }}
                   >
-                    Clear Filters
+                    Clear all filters
                   </button>
                 )}
 
                 {chipsetFilter && (
                   <button
                     disabled
-                    className="bg-gray-300 text-gray-700 px-3 py-2 rounded cursor-not-allowed"
+                    className="rounded-0 bg-[#DFE1E5] border px-5 py-2 text-sm fw-bold btn btn-primary max-h-[80px]"
+                    style={{ color: "#212529" }}
                   >
                     {chipsetFilter}
                   </button>
@@ -176,7 +182,8 @@ const FilterComponent = () => {
                 {seriesFilter && (
                   <button
                     disabled
-                    className="bg-gray-300 text-gray-700 px-3 py-2 rounded cursor-not-allowed"
+                    className="rounded-0 bg-[#DFE1E5] border text-dark text-sm px-5 py-2 fw-bold btn btn-primary"
+                    style={{ color: "#212529" }}
                   >
                     {seriesFilter}
                   </button>
@@ -185,7 +192,8 @@ const FilterComponent = () => {
                 {vramFilter && (
                   <button
                     disabled
-                    className="bg-gray-300 text-gray-700 px-3 py-2 rounded cursor-not-allowed"
+                    className="rounded-0 bg-[#DFE1E5] border text-dark text-sm px-5 py-2 fw-bold btn btn-primary"
+                    style={{ color: "#212529" }}
                   >
                     {vramFilter}
                   </button>
@@ -194,7 +202,7 @@ const FilterComponent = () => {
             </div>
 
             {filteredData.length === 0 ||
-            !isShowData(chipsetFilter, seriesFilter, vramFilter) ? (
+              !isShowData(chipsetFilter, seriesFilter, vramFilter) ? (
               <p className="text-gray-600">
                 No data to display. Apply filters to see results.
               </p>
@@ -221,7 +229,6 @@ const FilterComponent = () => {
           <div dangerouslySetInnerHTML={{ __html: comment }} />
         </div>
       </div>
-      <Loader loading={loading}/>
     </div>
   );
 };
