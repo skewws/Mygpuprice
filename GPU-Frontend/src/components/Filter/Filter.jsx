@@ -39,7 +39,7 @@ const Filter = ({ filtersTypes, selectedFilterType, handleChange }) => {
                 readOnly
               />
               <span className="checkmark"></span>
-              <span className="label-text">{chipset.toLowerCase()}</span>
+              <span className="label-text">{chipset}</span>
             </label>
           </div>
         ))}
@@ -54,7 +54,7 @@ const Filter = ({ filtersTypes, selectedFilterType, handleChange }) => {
                 onChange={() => handleChange(chipset)}
               />
               <span className="checkmark"></span>
-              <span className="label-text">{chipset.toLowerCase()}</span>
+              <span className="label-text">{chipset}</span>
             </label>
           </div>
         ))}
