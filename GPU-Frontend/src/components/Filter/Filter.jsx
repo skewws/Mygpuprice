@@ -39,7 +39,7 @@ const Filter = ({ filtersTypes, selectedFilterType, handleChange }) => {
                 readOnly
               />
               <span className="checkmark"></span>
-              <span className="label-text">{chipset}</span>
+              <span className="label-text text-sm">{chipset}</span>
             </label>
           </div>
         ))}
@@ -54,7 +54,7 @@ const Filter = ({ filtersTypes, selectedFilterType, handleChange }) => {
                 onChange={() => handleChange(chipset)}
               />
               <span className="checkmark"></span>
-              <span className="label-text">{chipset}</span>
+              <span className="label-text text-sm">{chipset}</span>
             </label>
           </div>
         ))}
@@ -63,12 +63,16 @@ const Filter = ({ filtersTypes, selectedFilterType, handleChange }) => {
           {!showMore ? (
             <div className="flex gap-2 items-center mb-4">
               <img src="/assets/square.png" className="h-4 w-4" alt="plus" />
-              <span style={{ color: "#212529" }}>Show More</span>
+              <span style={{ color: "#212529" }} className="text-sm">
+                Show More
+              </span>
             </div>
           ) : (
             <div className="flex gap-2 items-center mb-4">
               <img src="/assets/minus.png" className="h-4 w-4" alt="plus" />
-              <span style={{ color: "#212529" }}>Show Less</span>
+              <span style={{ color: "#212529" }} className="text-sm">
+                Show Less
+              </span>
             </div>
           )}
         </div>

@@ -129,7 +129,7 @@ const FilterComponent = () => {
         <img src="/assets/logo.png" alt="logo" className="max-w-[150px]" />
         {heading}
       </div>
-      <div className="max-w-[750px] m-auto flex flex-col">
+      <div className="max-w-[850px] m-auto flex flex-col">
         <div className="flex flex-col md:flex-row justify-between mt-6">
           <div className="w-[80%] md:w-[30%] p-4 bg-white border border-color-[#dee2e6] shadow-md">
             <h2
@@ -175,7 +175,7 @@ const FilterComponent = () => {
                 {checkFilterAppy(chipsetFilter, seriesFilter, vramFilter) && (
                   <button
                     onClick={handleClearFilters}
-                    className="rounded-0 bg-white border text-sm px-5 py-2 font-bold max-h-[80px]"
+                    className="rounded-0 bg-white border text-xs px-4 py-2 font-bold max-h-[80px]"
                     style={{ color: "#212529" }}
                   >
                     Clear all filters
@@ -185,7 +185,7 @@ const FilterComponent = () => {
                 {chipsetFilter && (
                   <button
                     disabled
-                    className="rounded-0 bg-[#DFE1E5] border px-5 py-2 text-sm fw-bold btn btn-primary max-h-[80px]"
+                    className="rounded-0 bg-[#DFE1E5] border px-4 py-2 text-xs fw-bold btn btn-primary max-h-[80px]"
                     style={{ color: "#212529" }}
                   >
                     {chipsetFilter}
@@ -195,7 +195,7 @@ const FilterComponent = () => {
                 {seriesFilter && (
                   <button
                     disabled
-                    className="rounded-0 bg-[#DFE1E5] border text-dark text-sm px-5 py-2 fw-bold btn btn-primary"
+                    className="rounded-0 bg-[#DFE1E5] border text-dark text-xs px-4 py-2 fw-bold btn btn-primary"
                     style={{ color: "#212529" }}
                   >
                     {seriesFilter}
@@ -205,7 +205,7 @@ const FilterComponent = () => {
                 {vramFilter && (
                   <button
                     disabled
-                    className="rounded-0 bg-[#DFE1E5] border text-dark text-sm px-5 py-2 fw-bold btn btn-primary"
+                    className="rounded-0 bg-[#DFE1E5] border text-dark text-xs px-4 py-2 fw-bold btn btn-primary"
                     style={{ color: "#212529" }}
                   >
                     {vramFilter}
