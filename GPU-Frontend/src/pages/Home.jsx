@@ -13,11 +13,12 @@ import { checkFilterAppy } from "../utils/helper";
 import Filter from "../components/Filter/Filter";
 import useFetchHeading from "../hooks/useFetchHeading";
 import { toast } from "react-toastify";
+import Loader from "../components/loader/index";
 
 const FilterComponent = () => {
   const comment = useFetchComment();
   const dynamicHeading = useFetchHeading();
-  const { axiosInstance } = useAxiosWithErrorHandling();
+  const { axiosInstance, loading } = useAxiosWithErrorHandling();
   const { data, uploadTime } = useFetchContent(axiosInstance);
 
   const [chipsetFilter, setChipsetFilter] = useState("");
@@ -114,7 +115,10 @@ const FilterComponent = () => {
     return (
       <div className="flex py-6 flex-col gap-3 justify-center items-center">
         {heading}
-        <h2 className="text-2xl font-semibold mb-4">No Data Found</h2>
+        <h2 className="text-2xl font-semibold mb-4">
+          {!loading ? "No Data Found" : ""}
+        </h2>
+        <Loader loading={loading} />
       </div>
     );
   }
@@ -238,6 +242,7 @@ const FilterComponent = () => {
           <div dangerouslySetInnerHTML={{ __html: comment }} />
         </div>
       </div>
+      <Loader loading={loading} />
     </div>
   );
 };
