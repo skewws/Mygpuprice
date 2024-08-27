@@ -125,30 +125,39 @@ const FilterComponent = () => {
         <img src="/assets/logo.png" alt="logo" className="max-w-[150px]" />
         {heading}
       </div>
-      <div className="max-w-[850px] m-auto flex flex-col">
+      <div className="max-w-[750px] m-auto flex flex-col">
         <div className="flex flex-col md:flex-row justify-between mt-6">
-          <div className="">
-            <h2 className="font-bold text-base text-left"
+          <div className="w-[80%] md:w-[30%] p-4 bg-white border border-color-[#dee2e6] shadow-md">
+            <h2
+              className="font-bold text-base text-left"
               style={{ color: "#212529" }}
-            >Chipset</h2>
+            >
+              Chipset
+            </h2>
             <Filter
               filtersTypes={filteredChipsets1}
               selectedFilterType={chipsetFilter}
               handleChange={handleChipsetChange}
             />
 
-            <h2 className="font-bold text-base text-left mt-2"
+            <h2
+              className="font-bold text-base text-left mt-2"
               style={{ color: "#212529" }}
-            >Series</h2>
+            >
+              Series
+            </h2>
             <Filter
               filtersTypes={filteredSeries1}
               selectedFilterType={seriesFilter}
               handleChange={handleSeriesChange}
             />
 
-            <h2 className="font-bold text-base text-left mt-2"
+            <h2
+              className="font-bold text-base text-left mt-2"
               style={{ color: "#212529" }}
-            >Vram</h2>
+            >
+              Vram
+            </h2>
             <Filter
               filtersTypes={filteredVram1}
               selectedFilterType={vramFilter}
@@ -202,7 +211,7 @@ const FilterComponent = () => {
             </div>
 
             {filteredData.length === 0 ||
-              !isShowData(chipsetFilter, seriesFilter, vramFilter) ? (
+            !isShowData(chipsetFilter, seriesFilter, vramFilter) ? (
               <p className="text-gray-600">
                 No data to display. Apply filters to see results.
               </p>
@@ -214,7 +223,7 @@ const FilterComponent = () => {
                       {" "}
                       {result}
                       {uploadTime && (
-                        <div className="ml-auto md:pr-0 pr-36 text-xs">
+                        <div className="ml-auto md:pr-0 text-xs">
                           Last Updated: {uploadTime}
                         </div>
                       )}
