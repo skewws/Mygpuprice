@@ -125,13 +125,13 @@ const FilterComponent = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 w-full p-4 bg-white">
-      <div className="flex flex-col items-center gap-4 mt-4">
-        <img src="/assets/logo.png" alt="logo" className="max-w-[150px]" />
+      <div className="flex flex-col items-center gap-4">
+        <img src="/assets/logo.png" alt="logo" className="max-w-[280px]" />
         {heading}
       </div>
-      <div className="max-w-[850px] m-auto flex flex-col">
-        <div className="flex flex-col md:flex-row justify-between mt-6">
-          <div className="w-[80%] md:w-[30%] p-4 bg-white border border-color-[#dee2e6] shadow-md">
+      <div className="max-w-[850px] m-auto flex flex-col border-t-customGray border-t-[1px] mt-6 pt-2">
+        <div className="flex flex-col md:flex-row justify-between border-b-[1px] border-b-customGray p-4">
+          <div className="w-[80%] md:w-[30%] border-r-customGray border-r-[1px]">
             <h2
               className="font-bold text-base text-left"
               style={{ color: "#212529" }}

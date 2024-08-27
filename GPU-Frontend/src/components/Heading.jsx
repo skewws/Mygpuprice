@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Loader from "./loader";
 import useFetchHeading from "../hooks/useFetchHeading";
 import { formats, quillModules } from "../utils/functions";
-import './../styles/index.css'
+import "./../styles/index.css";
 
 const Heading = () => {
   const heading = useFetchHeading();
@@ -15,13 +15,14 @@ const Heading = () => {
 
   const handleSubmit = async () => {
     try {
-      await axiosInstance.post("/heading/save", { content: editorValue || heading });
+      await axiosInstance.post("/heading/save", {
+        content: editorValue || heading,
+      });
       toast.success("Heading has been saved");
     } catch (error) {
       toast.error("Failed to submit heading.");
     }
   };
-
 
   return (
     <div className="p-4 bg-white shadow-lg rounded">
@@ -33,8 +34,7 @@ const Heading = () => {
           placeholder="Write your heading here..."
           modules={quillModules}
           formats={formats}
-          theme="snow" 
-         
+          theme="snow"
         />
       </div>
       <button

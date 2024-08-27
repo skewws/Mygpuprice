@@ -17,6 +17,7 @@ const DataEntry = () => {
   const [fileContent, setFileContent] = useState([]);
   const [columnNames, setColumnNames] = useState([]);
   const { axiosInstance, loading } = useAxiosWithErrorHandling();
+  const [isFetching, setFetching] = useState(false);
 
   const handleFileUpload = async (e, sFile = null) => {
     const uploadedFile = e?.target?.files[0] || sFile;
@@ -50,7 +51,6 @@ const DataEntry = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(columnNames,"columnNames");
   useEffect(() => {
     if (file && isUploaded) {
       handleSaveFile();
@@ -97,6 +97,7 @@ const DataEntry = () => {
 
   const handleDownloadFile = async (isFetch = false) => {
     try {
+      setFetching(true);
       const response = await axios.get(`${apiUrl}/download`, {
         responseType: "blob",
       });
@@ -107,6 +108,8 @@ const DataEntry = () => {
       } else saveAs(response.data, "data.xlsx");
     } catch (error) {
       console.log(error);
+    } finally {
+      setFetching(false);
     }
   };
 
@@ -126,7 +129,7 @@ const DataEntry = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <div className="p-4 border-b border border-color-[#000] flex justify-between items-center">
-      <h2 className="text-[19px] font-bold">Data Entry</h2>
+        <h2 className="text-[19px] font-bold">Data Entry</h2>
         <div className="flex space-x-4 items-center flex-wrap">
           {uploadTime && (
             <div className="">
@@ -190,45 +193,45 @@ const DataEntry = () => {
           </table>
         </div> */}
         <div className="overflow-x-auto">
-  <table className="min-w-full bg-white border border-gray-300 rounded">
-    <thead>
-      <tr className="bg-white">
-        {columnNames.map((colName, colIndex) => (
-          <th key={colIndex} className="py-2 px-4 border-b">
-            {colName}
-          </th>
-        ))}
-      </tr>
-    </thead>
-    <tbody>
-      {fileContent.length === 0 ? (
-        <tr>
-          <td colSpan={columnNames.length} className="py-4 text-center">
-            No data available
-          </td>
-        </tr>
-      ) : (
-        fileContent.map((row, rowIndex) => (
-          <tr
-            key={rowIndex}
-            style={{
-              backgroundColor: rowIndex % 2 === 0 ? "#F2F2F2" : "#FFFFFF",
-            }}
-          >
-            {columnNames.map((colName, colIndex) => (
-              <td key={colIndex} className="py-2 px-4 border-b">
-                {row[colName] || "-"}
-              </td>
-            ))}
-          </tr>
-        ))
-      )}
-    </tbody>
-  </table>
-</div>
-
+          <table className="min-w-full bg-white border border-gray-300 rounded">
+            <thead>
+              <tr className="bg-white">
+                {columnNames.map((colName, colIndex) => (
+                  <th key={colIndex} className="py-2 px-4 border-b">
+                    {colName}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {fileContent.length === 0 ? (
+                <tr>
+                  <td colSpan={columnNames.length} className="py-4 text-center">
+                    No data available
+                  </td>
+                </tr>
+              ) : (
+                fileContent.map((row, rowIndex) => (
+                  <tr
+                    key={rowIndex}
+                    style={{
+                      backgroundColor:
+                        rowIndex % 2 === 0 ? "#F2F2F2" : "#FFFFFF",
+                    }}
+                  >
+                    {columnNames.map((colName, colIndex) => (
+                      <td key={colIndex} className="py-2 px-4 border-b">
+                        {row[colName] || "-"}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <Loader loading={loading} />
+      <Loader loading={loading || isFetching} />
     </div>
   );
 };

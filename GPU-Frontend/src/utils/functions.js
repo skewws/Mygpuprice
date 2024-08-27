@@ -76,17 +76,23 @@ export const isShowData = (chipset, series, vram) => {
   return chipset !== "" && series !== "" && vram !== "";
 };
 
-
 export const quillModules = {
   toolbar: [
-    [{ 'size': ['small', false, 'large', 'huge'] }],  
-    ['bold', 'italic', 'underline', 'strike'],        
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],     
-    ['link', 'image'],                                
+    [{ size: ["small", false, "large", "huge"] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["link", "image"],
   ],
 };
 
-
 export const formats = [
-  'size', 'bold', 'italic', 'underline', 'strike', 'list', 'bullet', 'link', 'image'
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "list",
+  "bullet",
+  "link",
+  "image",
 ];

@@ -42,8 +42,21 @@ const EditEntry = () => {
     setData(arr);
   };
 
+  const handleEditWrapper = (e, colIndex, rowIndex, colName) => {
+    const newValue =
+      colIndex >= 3
+        ? e.target.innerText.replace(/\$/g, "")
+        : e.target.innerText;
+    handleEdit(rowIndex, colName, newValue);
+  };
+
   if (data?.length === 0) {
-    return <div>No Data Found- Upload New File</div>;
+    return (
+      <div>
+        No Data Found- Upload New File
+        <Loader loading={loading} />
+      </div>
+    );
   }
 
   return (
@@ -89,13 +102,9 @@ const EditEntry = () => {
                   }`}
                   contentEditable
                   suppressContentEditableWarning
-                  onBlur={(e) => {
-                    const newValue =
-                      colIndex >= 3
-                        ? e.target.innerText.replace(/\$/g, "")
-                        : e.target.innerText;
-                    handleEdit(rowIndex, colName, newValue);
-                  }}
+                  onBlur={(e) =>
+                    handleEditWrapper(e, colIndex, rowIndex, colName)
+                  }
                 >
                   {colIndex >= 3
                     ? `$${row[colName] || ""}`
