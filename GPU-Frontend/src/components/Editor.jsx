@@ -52,7 +52,7 @@ export default function MyEditor({ handleSubmit, htmlContent, title = "Save Head
             <REditor
                 editorState={editorState}
                 toolbar={{
-                    options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'colorPicker', 'link'],
+                    options: ['inline', 'fontSize', 'list', 'textAlign', 'colorPicker', 'link'],
                 }}
                 wrapperClassName="wrapperClassName"
                 editorClassName="editorClassName"
