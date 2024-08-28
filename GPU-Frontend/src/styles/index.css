@@ -1,3 +1,9 @@
-/* .ql-size-small { font-size: 18px; } 
-.ql-size-large { font-size: 20px; } 
-.ql-size-huge { font-size: 32px; }  */
+.editorClassName {
+    padding: 0px 10px ;
+}
+
+.wrapperClassName{
+    min-height: 200px;
+    height: auto; 
+    border: 1px solid #cccccc;
+}

@@ -42,12 +42,16 @@ const EditEntry = () => {
     setData(arr);
   };
 
-  const handleEditWrapper = (e, colIndex, rowIndex, colName) => {
+  const handleEditWrapper = (e, colIndex, rowIndex, colName, currentValue) => {
     const newValue =
       colIndex >= 3
         ? e.target.innerText.replace(/\$/g, "")
         : e.target.innerText;
-    handleEdit(rowIndex, colName, newValue);
+
+    const isCall = colIndex > 3 ? +newValue !== +currentValue : newValue !== currentValue
+    if (isCall) {
+      handleEdit(rowIndex, colName, newValue);
+    }
   };
 
   if (data?.length === 0) {
@@ -67,9 +71,8 @@ const EditEntry = () => {
             {getColumns()?.map((colName, index) => (
               <th
                 key={index}
-                className={`py-2 px-4 border-b text-left ${
-                  index < 3 ? "bg-gray-200 sticky left-0 z-10" : ""
-                }`}
+                className={`py-2 px-4 border-b text-left ${index < 3 ? "bg-gray-200 sticky left-0 z-10" : ""
+                  }`}
               >
                 {colName !== "VRAM" ? (
                   colName
@@ -97,13 +100,12 @@ const EditEntry = () => {
               {getColumns()?.map((colName, colIndex) => (
                 <td
                   key={colIndex}
-                  className={`py-2 px-4 border-b ${
-                    colIndex < 3 ? "bg-gray-200 sticky left-0 z-0" : ""
-                  }`}
+                  className={`py-2 px-4 border-b ${colIndex < 3 ? "bg-gray-200 sticky left-0 z-0" : ""
+                    }`}
                   contentEditable
                   suppressContentEditableWarning
                   onBlur={(e) =>
-                    handleEditWrapper(e, colIndex, rowIndex, colName)
+                    handleEditWrapper(e, colIndex, rowIndex, colName, row[colName])
                   }
                 >
                   {colIndex >= 3

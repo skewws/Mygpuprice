@@ -106,7 +106,9 @@ const FilterComponent = () => {
   );
 
   const heading = (
-    <div className="flex flex-col text-center">
+    <div className="flex flex-col text-center"
+    style={{whiteSpace: 'pre-wrap' }}
+    >
       <div dangerouslySetInnerHTML={{ __html: dynamicHeading }}></div>
     </div>
   );
@@ -126,12 +128,12 @@ const FilterComponent = () => {
   return (
     <div className="min-h-screen bg-gray-100 w-full p-4 bg-white">
       <div className="flex flex-col items-center gap-4">
-        <img src="/assets/logo.png" alt="logo" className="max-w-[280px]" />
+        <img src="/assets/logo.png" alt="logo" className="max-w-[320px]" />
         {heading}
       </div>
       <div className="max-w-[850px] m-auto flex flex-col border-t-customGray border-t-[1px] mt-6 pt-2">
         <div className="flex flex-col md:flex-row justify-between border-b-[1px] border-b-customGray p-4">
-          <div className="w-[80%] md:w-[30%] border-r-customGray border-r-[1px]">
+          <div className="w-[80%] md:w-[30%] border-r-customGray border-r-none md:border-r-[1px]">
             <h2
               className="font-bold text-base text-left"
               style={{ color: "#212529" }}
