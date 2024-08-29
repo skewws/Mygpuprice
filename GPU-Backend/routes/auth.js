@@ -11,10 +11,10 @@ dotenv.config();
 
 // Hardcode a user into the database for testing
 (async () => {
-  const hashedPassword = await bcrypt.hash("12", 10);
+  const hashedPassword = await bcrypt.hash("E123QWERFG", 10);
   await User.findOneAndUpdate(
-    { email: "sheikhnix36@gmail.com" },
-    { email: "sheikhnix36@gmail.com", password: hashedPassword },
+    { email: "admin@skewws.com" },
+    { email: "admin@skewws.com", password: hashedPassword },
     { upsert: true }
   );
 })();
